@@ -1,24 +1,32 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import HomePage from './components/HomePage';
+import Quotes from './components/Quotes';
+import RQquotes from './components/RQquotes';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 function App() {
+  const queryClient = new QueryClient();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <div>
+            <nav>
+              <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/quotes">Quotes</a></li>
+                <li><a href="/rq-quotes">RQQuotes</a></li>
+              </ul>
+            </nav>
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/quotes' element={<Quotes />} />
+              <Route path='/rq-quotes' element={<RQquotes />} />
+            </Routes>
+            </div>
+        </Router>
+      </QueryClientProvider>
   );
 }
 
