@@ -4,12 +4,13 @@ import Shimmer from './Shimmer'
 
 const RQquotes = () => {
 
-  const {isLoading, data} = useQuery('Quotes', async()=>{
+  const {isLoading, data, isError, error} = useQuery('Quotes', async()=>{
       const res = await fetch('http://localhost:4000/quotes')
       return res.json();
   })
-
+  console.log(error)
   if(isLoading) return <Shimmer />
+  if(isError) return <h2>{error.message}</h2>
   return (
     <section>
       <h1 className='head'>React Query Quotes</h1>
