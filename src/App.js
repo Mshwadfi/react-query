@@ -1,22 +1,22 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import HomePage from './components/HomePage';
 import Quotes from './components/Quotes';
 import RQquotes from './components/RQquotes';
 import { QueryClient, QueryClientProvider } from 'react-query';
-
+import {ReactQueryDevtools} from 'react-query/devtools'
 function App() {
   const queryClient = new QueryClient();
 
   return (
       <QueryClientProvider client={queryClient}>
-        <Router>
+       <Router>
           <div>
             <nav>
               <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/quotes">Quotes</a></li>
-                <li><a href="/rq-quotes">RQQuotes</a></li>
+                <li><Link to="/">Home</Link></li>
+                <li><Link to="/quotes">Quotes</Link></li>
+                <li><Link to="/rq-quotes">RQQuotes</Link></li>
               </ul>
             </nav>
             <Routes>
@@ -26,6 +26,7 @@ function App() {
             </Routes>
             </div>
         </Router>
+       <ReactQueryDevtools initialIsOpen={false} position='bottom-right'/>
       </QueryClientProvider>
   );
 }
