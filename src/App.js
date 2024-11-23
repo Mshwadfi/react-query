@@ -6,6 +6,7 @@ import RQquotes from './components/RQquotes';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {ReactQueryDevtools} from 'react-query/devtools'
 import Quote from './components/Quote';
+import ParallelQueries from './components/ParallelQueries';
 function App() {
   const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ function App() {
               <Route path='/quotes' element={<Quotes />} />
               <Route path='/rq-quotes' element={<RQquotes />} />
               <Route path='/rq-quotes/:id' element={<Quote />} />
+              <Route path='/parallel-queries' element={<ParallelQueries />} />
             </Routes>
             </div>
         </Router>

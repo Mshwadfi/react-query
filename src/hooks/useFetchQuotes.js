@@ -7,7 +7,7 @@ const fetchQuotes = async()=> {
 export const useFetchQuotes = ()=>{
     const data = useQuery('quotes', fetchQuotes,{
         staleTime: 3000,
-        enabled: false,
+        // enabled: false,
         // select: (data) =>{
         //     const quotes = data.map(quote => quote.quote)
         //     return quotes;
@@ -25,5 +25,15 @@ export const useFetchSingleQuote = (id)=>{
     const data = useQuery(['single-quote', id], ()=>fetchSingleQuote(id),{
         staleTime: 3000,
     })
+    return data;
+}
+
+const fetchPoetry = async()=>{
+    const res = await fetch('http://localhost:4000/poetry');
+    return res.json();
+}
+
+export const useFetchPoetry = ()=>{
+    const data = useQuery('poetry', fetchPoetry);
     return data;
 }
