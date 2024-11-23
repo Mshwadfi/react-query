@@ -1,5 +1,6 @@
 import React from 'react'
 import { useFetchPoetry, useFetchQuotes } from '../hooks/useFetchQuotes'
+import DynamicParallel from './DynamicParallel';
 
 const ParallelQueries = () => {
 
@@ -26,6 +27,8 @@ const ParallelQueries = () => {
         </div>
       ))
     }</section>
+    <h1>Dynamic Parallel Queries</h1>
+    <DynamicParallel ids={[1,2,3]}/>
     </>
   )
 }

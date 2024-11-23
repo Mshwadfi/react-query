@@ -1,4 +1,4 @@
-import { useQuery } from "react-query"
+import { useQuery, useQueries } from "react-query"
 
 const fetchQuotes = async()=> {
     const res = await fetch('http://localhost:4000/quotes')
@@ -36,4 +36,17 @@ const fetchPoetry = async()=>{
 export const useFetchPoetry = ()=>{
     const data = useQuery('poetry', fetchPoetry);
     return data;
+}
+
+export const useDynamicParallelQueries = (ids)=>{
+    console.log('recieved ids: ',ids)
+    const queryResults = useQueries(
+        ids?.map(id => {
+            return {
+                queryKey: ['single-quote', id],
+                queryFn: ()=> fetchSingleQuote(id),
+            }
+        })
+    )
+    return queryResults;
 }
