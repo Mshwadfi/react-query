@@ -52,5 +52,52 @@
           "line": "دعِ الأَيّامَ تَفعلُ ما تَشاءُ وطبْ نفساً إذا حكمَ القضاءُ",
           "poet": "الإمام الشافعي"
       }
-  ]
+  ],
+  "users":[
+    {
+        "storeId": "0000",
+        "id":"123456"
+    }
+  ],
+  "stores": [
+  {
+    "id": "0000",
+    "products": [
+      {
+        "id": "P001",
+        "name": "Basic Cotton T-shirt",
+        "category": "Apparel",
+        "price": 19.99,
+        "currency": "USD",
+        "description": "A soft and comfortable cotton T-shirt available in multiple colors.",
+        "sizes": ["S", "M", "L", "XL"],
+        "colors": ["White", "Black", "Gray", "Navy"],
+        "stock": 150
+      },
+      {
+        "id": "P002",
+        "name": "Slim Fit Jogger Pants",
+        "category": "Apparel",
+        "price": 39.99,
+        "currency": "USD",
+        "description": "Stylish jogger pants with a slim fit for ultimate comfort and style.",
+        "sizes": ["M", "L", "XL"],
+        "colors": ["Charcoal", "Olive Green", "Black"],
+        "stock": 100
+      },
+      {
+        "id": "P003",
+        "name": "Classic Denim Jeans",
+        "category": "Apparel",
+        "price": 49.99,
+        "currency": "USD",
+        "description": "High-quality denim jeans with a classic fit and durable stitching.",
+        "sizes": ["30", "32", "34", "36"],
+        "colors": ["Blue", "Dark Blue", "Black"],
+        "stock": 200
+      }
+    ]
+  }
+]
+
 }
