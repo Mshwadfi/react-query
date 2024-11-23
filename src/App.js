@@ -5,6 +5,7 @@ import Quotes from './components/Quotes';
 import RQquotes from './components/RQquotes';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import {ReactQueryDevtools} from 'react-query/devtools'
+import Quote from './components/Quote';
 function App() {
   const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function App() {
               <Route path='/' element={<HomePage />} />
               <Route path='/quotes' element={<Quotes />} />
               <Route path='/rq-quotes' element={<RQquotes />} />
+              <Route path='/rq-quotes/:id' element={<Quote />} />
             </Routes>
             </div>
         </Router>

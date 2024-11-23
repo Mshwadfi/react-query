@@ -15,3 +15,15 @@ export const useFetchQuotes = ()=>{
     })
     return data;
 }
+
+const fetchSingleQuote = async(id)=>{
+    const res = await fetch(`http://localhost:4000/quotes/${id}`)
+    return res.json();
+}
+
+export const useFetchSingleQuote = (id)=>{
+    const data = useQuery(['single-quote', id], ()=>fetchSingleQuote(id),{
+        staleTime: 3000,
+    })
+    return data;
+}

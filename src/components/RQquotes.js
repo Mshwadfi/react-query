@@ -2,6 +2,7 @@ import React from 'react'
 import { useQuery } from 'react-query'
 import Shimmer from './Shimmer'
 import { useFetchQuotes } from '../hooks/useFetchQuotes'
+import { Link } from 'react-router-dom'
 
 const RQquotes = () => {
 
@@ -26,7 +27,7 @@ const RQquotes = () => {
       {
         data?.map(quote => (
         <div key={quote.id} className='quote'>
-         <h3 key={quote.id}>{quote.quote}</h3>
+         <Link to={`/rq-quotes/${quote.id}`}><h3 key={quote.id}>{quote.quote}</h3></Link>
          <p>{quote.author}</p>
         </div>
       ))
