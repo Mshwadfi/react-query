@@ -1,10 +1,10 @@
 import React from 'react'
-import { useFetchSingleQuote } from '../hooks/useFetchQuotes'
+import {useFetchQuoteWithInitialQueryData, useFetchSingleQuote } from '../hooks/useFetchQuotes'
 import { useParams } from 'react-router-dom';
 
 const Quote = () => {
     let {id} = useParams();
-    const {data, isLoading, isError, error} = useFetchSingleQuote(id);
+    const {data, isLoading, isError, error} = useFetchQuoteWithInitialQueryData(id);
     console.log('single Quote',data);
 
     if(isLoading) return <h2>Loading...</h2>

@@ -1,4 +1,4 @@
-import { useQuery, useQueries } from "react-query"
+import { useQuery, useQueries, useQueryClient } from "react-query"
 
 const fetchQuotes = async()=> {
     const res = await fetch('http://localhost:4000/quotes')
@@ -50,3 +50,26 @@ export const useDynamicParallelQueries = (ids)=>{
     )
     return queryResults;
 }
+
+export const useFetchQuoteWithInitialQueryData = (id) => {
+    const queryClient = useQueryClient();
+
+    return useQuery(
+        ['single-quote', id],
+        () => fetchSingleQuote(id), 
+        {
+            initialData: () => {
+                const cachedData = queryClient.getQueryData('quotes'); // Fetch cached data for the 'quotes' query
+                if (cachedData) {
+                    const quote = cachedData.find((quote) => parseInt(quote.id) === parseInt(id)); // Find the quote by id
+                    if (quote) {
+                        console.log('cached quote',quote);
+                        return quote; // Directly return the quote if found
+                    }
+                }
+                return undefined; // Return undefined if no initial data is available
+            },
+            staleTime: 30000,
+        }
+    );
+};
