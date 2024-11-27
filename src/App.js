@@ -8,6 +8,7 @@ import {ReactQueryDevtools} from 'react-query/devtools'
 import Quote from './components/Quote';
 import ParallelQueries from './components/ParallelQueries';
 import DependantQueries from './components/DependantQueries';
+import PaginateQueries from './components/PaginatedQueries';
 function App() {
   const queryClient = new QueryClient();
 
@@ -29,6 +30,7 @@ function App() {
               <Route path='/rq-quotes/:id' element={<Quote />} />
               <Route path='/parallel-queries' element={<ParallelQueries />} />
               <Route path='/dependent-queries' element={<DependantQueries id={'123456'}/>} />
+              <Route path='paginated-queries' element={<PaginateQueries />} />
             </Routes>
             </div>
         </Router>
