@@ -3,6 +3,7 @@ import { useQuery } from 'react-query'
 import Shimmer from './Shimmer'
 import { useFetchQuotes } from '../hooks/useFetchQuotes'
 import { Link } from 'react-router-dom'
+import AddQuoteForm from './AddQuoteForm'
 
 const RQquotes = () => {
 
@@ -38,6 +39,7 @@ const RQquotes = () => {
         ))
       } */}
     </section>
+    <AddQuoteForm />
     </section>
   )
 }
