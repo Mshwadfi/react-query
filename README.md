@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# React Query
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React Query is a powerful library that simplifies data fetching, caching, synchronization, and state management for server-state in React applications. It provides hooks like `useQuery` and `useMutation` to handle asynchronous operations seamlessly. Here’s why you should consider using React Query and how it compares to traditional approaches like `useEffect`.
 
-## Available Scripts
+## Why React Query
 
-In the project directory, you can run:
+React Query abstracts away complex data-fetching logic, including caching, pagination, background data updates, and automatic retries, making your code cleaner and more efficient. It focuses on server-state, such as fetching data, managing loading, error handling, and synchronization between the server and UI.
 
-### `npm start`
+### Benefits:
+- **Automatic caching**: React Query automatically caches data and manages cache invalidation.
+- **Background refetching**: It can automatically refetch data in the background when the user revisits a component.
+- **Optimistic updates**: You can implement optimistic updates to give your app a snappy, responsive feel.
+- **Error handling**: Built-in error handling that helps simplify UI states based on the data-fetching result.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## React Query vs `useEffect`
 
-### `npm test`
+When fetching data with `useEffect`, you often need to manually manage loading and error states, along with data caching. React Query, on the other hand, automatically handles these concerns.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Example: Fetching data with `useEffect` vs React Query
 
-### `npm run build`
+#### Using `useEffect`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```jsx
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+const QuotesWithUseEffect = () => {
+  const [quotes, setQuotes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+  useEffect(() => {
+    fetch('http://localhost:4000/quotes')
+      .then(res => res.json())
+      .then(data => {
+        setQuotes(data);
+        setIsLoading(false);
+      })
+      .catch(err => {
+        setError(err);
+        setIsLoading(false);
+      });
+  }, []);
 
-### `npm run eject`
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>{error.message}</div>;
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+  return (
+    <section>
+      <h1>Quotes</h1>
+      <div className='quotes'>
+        {quotes.map(quote => (
+          <div key={quote.id} className='quote'>
+            <Link to={`/quotes/${quote.id}`}><h3>{quote.quote}</h3></Link>
+            <p>{quote.author}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default QuotesWithUseEffect;
