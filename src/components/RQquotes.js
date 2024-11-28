@@ -6,18 +6,6 @@ import { Link } from 'react-router-dom'
 import AddQuoteForm from './AddQuoteForm'
 
 
-// const fetchQuotes = async()=>{
-//     const res = await fetch('http://localhost:4000/quotes');
-//     return res.json();
-  
-// }
-// const { isLoading, data, isError, error } = useQuery(
-//   'Quotes', //this is the unique key
-//    fetchQuotes, //this is the fetcher function
-//   {
-//       //this is the configration object(now it is empty but later we will add very interesting properties on it)
-//   }
-// )
 
 const RQquotes = () => {
 

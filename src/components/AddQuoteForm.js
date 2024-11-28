@@ -27,8 +27,13 @@ const AddQuoteForm = () => {
   };
 
   const { mutate: addQuote } = useMutation(postQuote,{
-    onSuccess: ()=>{
-      queryClient.invalidateQueries('quotes');
+    onSuccess: (data)=>{
+      // queryClient.invalidateQueries('quotes'); 
+      queryClient.setQueryData('quotes', (oldQuotes)=>{
+        console.log('dataa', data)
+        console.log('old', oldQuotes)
+        return oldQuotes? [...oldQuotes, data] : [data];
+      })
     }
   });
 
