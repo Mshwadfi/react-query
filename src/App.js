@@ -9,6 +9,7 @@ import Quote from './components/Quote';
 import ParallelQueries from './components/ParallelQueries';
 import DependantQueries from './components/DependantQueries';
 import PaginateQueries from './components/PaginatedQueries';
+import InfiniteQueries from './components/InfiniteQueries';
 function App() {
   const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ function App() {
               <Route path='/parallel-queries' element={<ParallelQueries />} />
               <Route path='/dependent-queries' element={<DependantQueries id={'123456'}/>} />
               <Route path='paginated-queries' element={<PaginateQueries />} />
+              <Route path='infinite-queries' element={<InfiniteQueries />} />
             </Routes>
             </div>
         </Router>
