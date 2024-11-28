@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useMutation } from "react-query";
+import { QueryClient, useMutation, useQueryClient } from "react-query";
 
 const AddQuoteForm = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +9,7 @@ const AddQuoteForm = () => {
 
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-
+  const queryClient = useQueryClient();
   const postQuote = async (quote) => {
     const res = await fetch("http://localhost:4000/quotes", {
       method: "POST",
@@ -26,7 +26,11 @@ const AddQuoteForm = () => {
     return await res.json();
   };
 
-  const { mutate: addQuote } = useMutation(postQuote);
+  const { mutate: addQuote } = useMutation(postQuote,{
+    onSuccess: ()=>{
+      queryClient.invalidateQueries('quotes');
+    }
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;

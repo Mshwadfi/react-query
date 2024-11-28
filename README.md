@@ -20,46 +20,176 @@ When fetching data with `useEffect`, you often need to manually manage loading a
 
 ### Example: Fetching data with `useEffect` vs React Query
 
-#### Using `useEffect`
+#### Using `useEffect` to fetch quotes:
 
-```jsx
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-
-const QuotesWithUseEffect = () => {
+```
+const Quotes = () => {
   const [quotes, setQuotes] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  
+  useEffect(()=>{
+    fetchQuotes();
+    setIsloading(true);
+  },[])
 
-  useEffect(() => {
-    fetch('http://localhost:4000/quotes')
-      .then(res => res.json())
-      .then(data => {
-        setQuotes(data);
-        setIsLoading(false);
-      })
-      .catch(err => {
-        setError(err);
-        setIsLoading(false);
-      });
-  }, []);
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  const fetchQuotes = async()=>{
+    try {
+      
+      const res = await fetch('http://localhost:4000/quotes');
+      const data = await res.json();
+      setQuotes(data);
+      setIsloading(false);
+    } catch (error) {
+      setError(error.message);
+      setIsloading(false);
+    }
+  }
 
   return (
-    <section>
-      <h1>Quotes</h1>
-      <div className='quotes'>
-        {quotes.map(quote => (
-          <div key={quote.id} className='quote'>
-            <Link to={`/quotes/${quote.id}`}><h3>{quote.quote}</h3></Link>
-            <p>{quote.author}</p>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-};
+    <section className='quotes'>{
+      quotes.map(quote => (
+        <div key={quote.id} className='quote'>
+         <h3 key={quote.id}>{quote.quote}</h3>
+         <p>{quote.author}</p>
+        </div>
+      ))
+    }</section>
+  )
+}
 
-export default QuotesWithUseEffect;
+```
+##### what if we want to add Loading and error states?
+we will assign 2 more state variables, and the code will be like this:
+
+```
+const Quotes = () => {
+  const [quotes, setQuotes] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
+  const [error, setError] = useState('');
+  
+  useEffect(()=>{
+    fetchQuotes();
+    setIsloading(true);
+  },[])
+
+  const fetchQuotes = async()=>{
+    try {
+      
+      const res = await fetch('http://localhost:4000/quotes');
+      const data = await res.json();
+      setQuotes(data);
+      setIsloading(false);
+    } catch (error) {
+      setError(error.message);
+      setIsloading(false);
+    }
+  }
+  console.log(error)
+
+  if(isLoading) return <Shimmer />
+  if(error) return <h2>{error}</h2>
+  return (
+    <section className='quotes'>{
+      quotes.map(quote => (
+        <div key={quote.id} className='quote'>
+         <h3 key={quote.id}>{quote.quote}</h3>
+         <p>{quote.author}</p>
+        </div>
+      ))
+    }</section>
+  )
+}
+```
+and to prevent the possibility of [race condition](https://maxrozen.com/race-conditions-fetching-data-react-with-useeffect) the code will become more complecated:
+```
+const Quotes = () => {
+  const [quotes, setQuotes] = useState([]);
+  const [isLoading, setIsloading] = useState(true);
+  const [error, setError] = useState('');
+  
+  useEffect(()=>{
+    let flag = true;
+    fetchQuotes();
+    if(flag) setIsloading(true);
+  },[])
+
+  const fetchQuotes = async()=>{
+    try {
+      
+      const res = await fetch('http://localhost:4000/quotes');
+      const data = await res.json();
+      setQuotes(data);
+      setIsloading(false);
+    } catch (error) {
+      setError(error.message);
+      setIsloading(false);
+    }
+  }
+  console.log(error)
+
+  if(isLoading) return <Shimmer />
+  if(error) return <h2>{error}</h2>
+  return (
+    <section className='quotes'>{
+      quotes.map(quote => (
+        <div key={quote.id} className='quote'>
+         <h3 key={quote.id}>{quote.quote}</h3>
+         <p>{quote.author}</p>
+        </div>
+      ))
+    }</section>
+  )
+}
+```
+#### using react query
+React Query simplifies data fetching by using the useQuery hook. It abstracts away the complexities of dealing with the lifecycle of a fetch request, you can easily fetch `data`, handle `errors` and track `loading` state.
+
+```
+const Quotes = () => {
+
+  const {isLoading, data, isError, error} = useQuery('Quotes', async()=>{
+      const res = await fetch('http://localhost:4000/quotes')
+      return res.json();
+  })
+  console.log(error)
+  if(isLoading) return <Shimmer />
+  if(isError) return <h2>{error.message}</h2>
+  return (
+    <section>
+      <h1 className='head'>React Query Quotes</h1>
+      <section className='quotes'>
+      {
+        data?.map(quote => (
+        <div key={quote.id} className='quote'>
+         <h3 key={quote.id}>{quote.quote}</h3>
+         <p>{quote.author}</p>
+        </div>
+      ))
+      }
+    </section>
+    </section>
+  )
+}
+```
+## the useQuery hook
+The useQuery hook is part of the React Query library and is used for fetching data asynchronously. It takes at least two parameters:
+
+**1-Query Key (First Parameter)**
+
+**2-Fetcher Function (Second Parameter)**
+
+**3-Configuration Object (Optional third parameter, used for further customization)**
+### Code Example
+```
+const fetchQuotes = async()=>{
+    const res = await fetch('http://localhost:4000/quotes');
+    return res.json();
+  
+}
+const { isLoading, data, isError, error } = useQuery(
+  'Quotes', //this is the unique key
+   fetchQuotes, //this is the fetcher function
+  {
+      //this is the configration object(now it is empty but later we will add very interesting properties on it)
+  }
+)
+```
