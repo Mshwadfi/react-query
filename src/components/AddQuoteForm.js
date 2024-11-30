@@ -27,14 +27,31 @@ const AddQuoteForm = () => {
   };
 
   const { mutate: addQuote } = useMutation(postQuote,{
-    onSuccess: (data)=>{
-      // queryClient.invalidateQueries('quotes'); 
-      queryClient.setQueryData('quotes', (oldQuotes)=>{
-        console.log('dataa', data)
-        console.log('old', oldQuotes)
+    // onSuccess: (data)=>{
+    //   // queryClient.invalidateQueries('quotes'); 
+    //   queryClient.setQueryData('quotes', (oldQuotes)=>{
+    //     console.log('dataa', data)
+    //     console.log('old', oldQuotes)
+    //     return oldQuotes? [...oldQuotes, data] : [data];
+    //   })
+    // }
+
+    onMutate: async (data)=>{
+      await queryClient.cancelQueries('quotes');
+      const oldQuotes = queryClient.getQueryData('quotes');
+      queryClient.setQueryData('quotes',(oldQuotes)=>{
         return oldQuotes? [...oldQuotes, data] : [data];
       })
+      return [oldQuotes];
+    },
+    onError: (_error, _quote, context)=>{
+      console.log('context', context)
+      queryClient.setQueryData('quotes', ...context);
+    },
+    onSettled: ()=>{
+      queryClient.invalidateQueries('quotes');
     }
+      
   });
 
   const handleChange = (e) => {
